@@ -1,13 +1,20 @@
 import json
 import numpy as np
+
 import tensorflow as tf
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
+
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import ConfusionMatrixDisplay
+
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-
+LEARNING_RATE = 0.0001
+N_SPLITS = 5
+EPOCHS = 100
+BATCH_SIZE = 32
 DATASET_PATH = 'data/brandisii/data.json'
 LABELS = ['New', 'One', 'Two', 'Noise']
 
@@ -88,17 +95,29 @@ if __name__ == '__main__':
     ])
 
     # compile model
-    optimiser = tf.keras.optimizers.Adam(learning_rate=0.0001)
+    optimiser = tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE)
     model.compile(optimizer=optimiser,
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
 
     # train model
-    kfold = StratifiedKFold(n_splits=5, shuffle=True)
+    kfold = StratifiedKFold(n_splits=N_SPLITS, shuffle=True)
+
+    # introduce checkpoints
+    checkpointer_cb = ModelCheckpoint(filepath='saved_models/brandisii_FCM.h5',
+                                      verbose=1, save_best_only=True, save_weights_only=False, monitor="val_loss")
+    reduce_lr_cb = ReduceLROnPlateau(monitor='val_loss', verbose=1)
+    earlystopping_cb = EarlyStopping(patience=10, restore_best_weights=True)
 
     histories = []
     for train, test in kfold.split(X_train, y_train):
-        history = model.fit(X_train, y_train, validation_data=(X_val, y_val), batch_size=32, epochs=100)
+        history = model.fit(X_train,
+                            y_train,
+                            validation_data=(X_val, y_val),
+                            batch_size=BATCH_SIZE,
+                            epochs=EPOCHS,
+                            callbacks=[checkpointer_cb, reduce_lr_cb, earlystopping_cb]
+                            )
         histories.append(history)
 
     # evaluate the model
