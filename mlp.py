@@ -107,7 +107,7 @@ if __name__ == '__main__':
     checkpointer_cb = ModelCheckpoint(filepath='saved_models/brandisii_FCM.h5',
                                       verbose=1, save_best_only=True, save_weights_only=False, monitor="val_loss")
     reduce_lr_cb = ReduceLROnPlateau(monitor='val_loss', verbose=1)
-    earlystopping_cb = EarlyStopping(patience=10, restore_best_weights=True)
+    earlystopping_cb = EarlyStopping(patience=int(EPOCHS/2), restore_best_weights=True)
 
     histories = []
     for train, test in kfold.split(X_train, y_train):
@@ -130,4 +130,5 @@ if __name__ == '__main__':
     print('\n----------------Model Metrics----------------')
     # Passing the first history instance, from the first iteration to see how loss & accuracy shape up.
     # If passed the last one, it's all straight horizontal line :-)
+
     _plt_metrics(model.predict(X_test), y_test, histories[0])
