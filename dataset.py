@@ -5,6 +5,7 @@ from tqdm import tqdm
 import json
 import scipy
 import numpy as np
+import matplotlib.pyplot as plt
 
 AUDIO_FILES_DIRECTORY = 'data/brandisii/raw/'
 DATASET_PATH = 'data/brandisii/data.json'
@@ -137,5 +138,19 @@ def _create_dataset():
         json.dump(data, fp, indent=4)
 
 
+def _plt_dataset():
+    with open(DATASET_PATH, 'r') as dataset_file:
+        data = json.load(dataset_file)
+
+    X = data['mfcc']
+    y = data['labels']
+
+    labels, counts = np.unique(y, return_counts=True)
+    plt.bar(labels, counts, align='center')
+    plt.gca().set_xticks(labels)
+    plt.suptitle('Class-wise Data')
+    plt.show()
+
 if __name__ == '__main__':
     _create_dataset()
+    _plt_dataset()
