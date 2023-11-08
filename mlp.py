@@ -30,7 +30,7 @@ def _load_data(path):
 
 
 def _plt_metrics(predictions, y_true, history):
-    fig, axs = plt.subplots(3, 1)
+    fig, axs = plt.subplots(3, 1, tight_layout=True)
     fig.suptitle('Model Metrics')
 
     # Confusion Matrix
