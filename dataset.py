@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 AUDIO_FILES_DIRECTORY = 'data/brandisii/raw/'
 DATASET_PATH = 'data/brandisii/data.json'
 SAMPLE_RATE = 44100
-DURATION = 3  # in seconds
+DURATION = 2  # in seconds
 FRAME_SIZE = 1024
 HOP_LENGTH = int(FRAME_SIZE / 4)
-PRE_SET = 0.005  # seconds before onset
+PRE_SET = 0.005  # start before onset - in seconds
 NO_MFCC = 20
 
 
