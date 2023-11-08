@@ -17,18 +17,12 @@ def _load_data(path):
     with open(path, 'r') as dataset_file:
         data = json.load(dataset_file)
 
-    X = np.array([data['zcr'],
-                  data['rms'],
-                  data['spec_rolloff_higher'],
-                  data['spec_rolloff_lower'],
-                  data['spec_flatness'],
-                  data['spec_centroid']
-                ])
+    X = np.array(data['mfcc'])
     y = np.array(data['labels'])
 
     print('Data loaded!')
 
-    return X.T, y
+    return X, y
 
 
 if __name__ == '__main__':
