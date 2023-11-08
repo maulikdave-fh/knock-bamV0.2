@@ -109,4 +109,6 @@ if __name__ == '__main__':
 
     # plot metrics
     print('\n----------------Model Metrics----------------')
+    # Passing the first history instance, from the first iteration to see how loss & accuracy shape up.
+    # If passed the last one, it's all straight horizontal line :-)
     _plt_metrics(model.predict(X_test), y_test, histories[0])
