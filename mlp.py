@@ -1,15 +1,11 @@
 import json
-import numpy as np
-
-import tensorflow as tf
-from tensorflow.keras.callbacks import ModelCheckpoint
-from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
-
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import ConfusionMatrixDisplay
 
 import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
+from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import train_test_split
 
 LEARNING_RATE = 0.0001
 N_SPLITS = 5
@@ -17,6 +13,7 @@ EPOCHS = 100
 BATCH_SIZE = 32
 DATASET_PATH = 'data/brandisii/data.json'
 LABELS = ['New', 'One', 'Two', 'Noise']
+
 
 def _load_data(path):
     """Loads training dataset from json file.
@@ -69,8 +66,6 @@ if __name__ == '__main__':
     # load data
     X, y = _load_data(DATASET_PATH)
 
-    print(X.shape)
-
     # create train/test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
     X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2)
@@ -104,10 +99,10 @@ if __name__ == '__main__':
     kfold = StratifiedKFold(n_splits=N_SPLITS, shuffle=True)
 
     # introduce checkpoints
-    checkpointer_cb = ModelCheckpoint(filepath='saved_models/brandisii_FCM.h5',
+    checkpointer_cb = tf.keras.callbacks.ModelCheckpoint(filepath='saved_models/brandisii_FCM.h5',
                                       verbose=1, save_best_only=True, save_weights_only=False, monitor="val_loss")
-    reduce_lr_cb = ReduceLROnPlateau(monitor='val_loss', verbose=1)
-    earlystopping_cb = EarlyStopping(patience=int(EPOCHS/2), restore_best_weights=True)
+    reduce_lr_cb = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', verbose=1)
+    earlystopping_cb = tf.keras.callbacks.EarlyStopping(patience=int(EPOCHS/2), restore_best_weights=True)
 
     histories = []
     for train, test in kfold.split(X_train, y_train):
