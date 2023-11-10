@@ -1,37 +1,17 @@
-import json
-
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import train_test_split
+import util
 
 RANDOM_STATE = 1
 LEARNING_RATE = 0.0001
 N_SPLITS = 5
 EPOCHS = 100
 BATCH_SIZE = 64
-DATASET_PATH = '../data/brandisii/data.json'
 LABELS = ['New', 'One', 'Two', 'Noise']
-
-
-def _load_data(path):
-    """Loads training dataset from json file.
-
-        :param path (str): Path to json file containing data
-        :return X (ndarray): Inputs
-        :return y (ndarray): Targets
-    """
-    with open(path, 'r') as dataset_file:
-        data = json.load(dataset_file)
-
-    X = np.array(data['mfcc'])
-    y = np.array(data['labels'])
-
-    print('Data loaded!')
-
-    return X, y
 
 
 def _plt_metrics(predictions, y_true, history):
@@ -68,7 +48,7 @@ def _plt_metrics(predictions, y_true, history):
 
 if __name__ == '__main__':
     # load data
-    X, y = _load_data(DATASET_PATH)
+    X, y = util._load_dataset()
 
     # create train/test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=RANDOM_STATE)

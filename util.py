@@ -1,6 +1,7 @@
 import numpy as np
 import scipy
 import librosa
+import json
 
 SAMPLE_RATE = 44100
 DURATION = 2  # in seconds
@@ -8,6 +9,24 @@ FRAME_SIZE = 1024
 HOP_LENGTH = int(FRAME_SIZE / 4)
 PRE_SET = 0.005  # start before onset - in seconds
 NO_MFCC = 20
+DATASET_PATH = 'data/brandisii/data.json'
+
+def _load_dataset(path=DATASET_PATH):
+    """Loads training dataset from json file.
+
+        :param path (str): Path to json file containing data
+        :return X (ndarray): Inputs
+        :return y (ndarray): Targets
+    """
+    with open(path, 'r') as dataset_file:
+        data = json.load(dataset_file)
+
+    X = np.array(data['mfcc'])
+    y = np.array(data['labels'])
+
+    print('Data loaded!')
+
+    return X, y
 
 
 def _env_mask(signal, threshold=0.003):
