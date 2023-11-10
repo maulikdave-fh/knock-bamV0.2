@@ -9,12 +9,12 @@ import util
 
 AUDIO_FILES_DIRECTORY = 'data/brandisii/raw/'
 DATASET_PATH = 'data/brandisii/data.json'
-SAMPLE_RATE = 44100
-DURATION = 2  # in seconds
-FRAME_SIZE = 1024
+SAMPLE_RATE = util.SAMPLE_RATE
+DURATION = util.DURATION  # in seconds
+FRAME_SIZE = util.FRAME_SIZE
 HOP_LENGTH = int(FRAME_SIZE / 4)
-PRE_SET = 0.005  # start before onset - in seconds
-NO_MFCC = 20
+PRE_SET = util.PRE_SET  # start before onset - in seconds
+NO_MFCC = util.NO_MFCC
 
 
 def _extract_zcr(segment):
@@ -61,7 +61,7 @@ def _create_dataset():
 
     # Iterate through files
     for dirname, _, filenames in os.walk(AUDIO_FILES_DIRECTORY):
-        for filename in tqdm(filenames, 'Extracting Features from audio files in directory {}....'.format(dirname)):
+        for filename in tqdm(filenames, 'Extracting Features from audio files in directory {}  '.format(dirname)):
             filepath = os.path.join(dirname, filename)
             signal, sr = sf.read(filepath)
 
@@ -101,6 +101,8 @@ def _create_dataset():
     with open(DATASET_PATH, 'w') as fp:
         json.dump(data, fp, indent=4)
 
+    print('\nDataset created successfully at {}'.format(DATASET_PATH))
+    print('DONE!')
 
 def _plt_dataset():
     with open(DATASET_PATH, 'r') as dataset_file:

@@ -7,15 +7,15 @@ import numpy as np
 
 app = Flask(__name__)
 
-SAVED_MODEL_PATH = 'saved_models/brandisii_FCM.h5'
+SAVED_MODEL_PATH_LOCAL = 'saved_models/brandisii_FCM.h5'
+SAVED_MODEL_PATH_PROD = '/home/foresthut/mysite/saved_models/brandisii_FCM.h5'
 SAMPLE_RATE = 44100
-THRESHOLD = 90
+THRESHOLD = 98
 MONO = 1
 
 
 def _predict(samples):
-    loaded_model = tf.keras.models.load_model(SAVED_MODEL_PATH)
-    # loaded_model =  tf.keras.models.load_model("/home/foresthut/mysite/saved_models/brandisii_FCM.h5")
+    loaded_model = tf.keras.models.load_model(SAVED_MODEL_PATH_LOCAL)
 
     mfccs_scaled_features = util._extract_mfcc(samples)
     mfccs_scaled_features = mfccs_scaled_features.reshape(1, -1)
@@ -71,6 +71,9 @@ def brandisiiV1_3():
     elif len(predictions) == 1:
         finalResult = predictions[0]
     else:
+        finalResult = 'Unsure!'
+
+    if finalResult == '3':
         finalResult = 'Unsure!'
 
     print('Final Result: {}'.format(finalResult))

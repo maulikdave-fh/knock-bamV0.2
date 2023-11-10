@@ -27,7 +27,7 @@ def _env_mask(signal, threshold=0.003):
 def _create_segmentsV1(signal):
     segments = []
 
-    peaks = scipy.signal.find_peaks(signal, height=0.1, distance=1000)
+    peaks = scipy.signal.find_peaks(signal, height=0.3, distance=1000)
     peaks_list = peaks[1]['peak_heights'].tolist()
 
     for i, peak in enumerate(peaks_list):
