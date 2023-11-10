@@ -7,7 +7,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-SAVED_MODEL_PATH_LOCAL = 'saved_models/brandisii_FCM.h5'
+SAVED_MODEL_PATH_LOCAL = '../saved_models/brandisii_FCM.h5'
 SAVED_MODEL_PATH_PROD = '/home/foresthut/mysite/saved_models/brandisii_FCM.h5'
 SAMPLE_RATE = 44100
 THRESHOLD = 98

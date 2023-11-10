@@ -12,7 +12,7 @@ LEARNING_RATE = 0.0001
 N_SPLITS = 5
 EPOCHS = 100
 BATCH_SIZE = 64
-DATASET_PATH = 'data/brandisii/data.json'
+DATASET_PATH = '../data/brandisii/data.json'
 LABELS = ['New', 'One', 'Two', 'Noise']
 
 
@@ -101,8 +101,8 @@ if __name__ == '__main__':
     kfold = StratifiedKFold(n_splits=N_SPLITS, shuffle=True, random_state=RANDOM_STATE)
 
     # introduce checkpoints
-    checkpointer_cb = tf.keras.callbacks.ModelCheckpoint(filepath='saved_models/brandisii_FCM.h5',
-                                      verbose=1, save_best_only=True, save_weights_only=False, monitor="val_loss")
+    checkpointer_cb = tf.keras.callbacks.ModelCheckpoint(filepath='../saved_models/brandisii_FCM.h5',
+                                                         verbose=1, save_best_only=True, save_weights_only=False, monitor="val_loss")
     reduce_lr_cb = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', verbose=1)
     earlystopping_cb = tf.keras.callbacks.EarlyStopping(patience=int(EPOCHS/10), restore_best_weights=True)
 
